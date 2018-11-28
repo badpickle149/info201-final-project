@@ -7,6 +7,7 @@
 
 library(httr)
 library(jsonlite)
+library(dplyr)
 
 key = "WxdDlU0dc1U3VPeVJ0Ke2G7QSTPENsSMAfnFKVHV"
 
@@ -22,9 +23,23 @@ get_dataset <- function(params) {
 # returns the data for a specific school
 data_school <- function(school){
   params <- list(school.name = school, api_key = key)
-  get_dataset(params)
+  data <- get_dataset(params)
+  data <- data$results
+}
+
+compare_schools <- function(school1, school2) {
+  school1_data <- data_school(school1)
+  school2_data <- data_school(school2)
+  school1_avg_price <- school1_data$latest$cost$avg_net_price.overall
+  school2_avg_price <- school2_data$latest$cost$avg_net_price.overall
+  
+  combined_data <- inner_join(school1_avg_price, school2_avg_price, by = avg_net_price.overall)
 }
 
 boston <- data_school("boston college")
+boston_admission_details <- head(boston$latest$admissions, 100)
+boston_cost_details <- boston$`2012`$cost
+boston_financial_aid <- boston$latest$aid
+school_sum <- summary(boston_cost_details %>% head(1))
 
 
