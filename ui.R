@@ -1,6 +1,8 @@
 library(shiny)
 
-##source("processing.R")
+## setwd("C:/Users/picklewoman/Documents/INFO201/assignments/info201-final-project")
+
+source("ui-processing.R")
 
 ui <- fluidPage(
   
@@ -10,8 +12,9 @@ ui <- fluidPage(
     tabPanel("compare_schools", 
              sidebarLayout(
                sidebarPanel(
+                 
                  selectizeInput(
-                   "schools", label = NULL, choices = state.name, multiple = TRUE, 
+                   "Schools", label = NULL, choices = , multiple = TRUE, 
                     options = list(placeholder = 'select a school', maxItems = 2, maxOptions = 8)
                    )
                ),
@@ -19,6 +22,8 @@ ui <- fluidPage(
                  
                )
              )
-             )
+
+           )
   )
+  
 )
