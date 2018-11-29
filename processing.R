@@ -42,4 +42,4 @@ boston_cost_details <- boston$`2012`$cost
 boston_financial_aid <- boston$latest$aid
 school_sum <- summary(boston_cost_details %>% head(1))
 
-
+compare <- compare_schools("boston college", "harvard university")
