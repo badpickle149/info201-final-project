@@ -15,7 +15,7 @@ ui <- fluidPage(
              titlePanel("Compare Two Schools"),
              sidebarLayout(
                sidebarPanel(
-
+                    
                      selectizeInput(
                        "School1", label = NULL, choices = schools, multiple = TRUE,
                         options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
@@ -31,29 +31,31 @@ ui <- fluidPage(
                  fluidRow(
                    column(1,
                      textOutput("school_title_1")
+                     ##tableOutput("school_summary_1")
                    ),
-                   column(2,
+                   column(3,
                      textOutput("school_title_2")
+                     ##tableOutput("school_summary_2")
                    )
                  )
                )
              )
-             
-             ## Old layout
-             # sidebarLayout(
-             #   sidebarPanel(
-             # 
-             #     selectizeInput(
-             #       "Schools", label = NULL, choices = schools, multiple = TRUE,
-             #        options = list(placeholder = 'select a school', maxItems = 2, maxOptions = 8)
-             #       )
-             #   ),
-             #   mainPanel(
-             # 
-             #   )
-             # )
 
            )
+    
+    # tabsetPanel("Compare by State",
+    #   titlePanel("Compare Schools by States"),
+    #   sidebarLayout(
+    #     
+    #     sidebarPanel(
+    #       
+    #     ),
+    #     
+    #     mainPanel(
+    #       
+    #     )
+    #   )
+    # )
   )
   
 )
