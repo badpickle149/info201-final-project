@@ -19,8 +19,8 @@ school_info_treas <- function(name, vector) {
 
 # combines both
 school_info <- function(name, vector1, vector2) {
-  score <- school_info_scor(name, c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10"))
-  treas <- school_info_treas(name, c("INSTNM", "MN_EARN_WNE_P10", "MD_EARN_WNE_P10"))
+  score <- school_info_scor(name, vector1)
+  treas <- school_info_treas(name, vector2)
   left_join(score, treas, by="INSTNM")
 }
 
