@@ -1,3 +1,5 @@
+# Processing the csv files
+
 library(dplyr)
 
 scorecard <- read.csv("data/Most-Recent-Cohorts-Scorecard-Elements.csv", stringsAsFactors = FALSE, header=TRUE, sep=",")
@@ -15,7 +17,13 @@ school_info_treas <- function(name, vector) {
     select_(.dots=vector)
 }
 
-# Example call of school_info
-harvard_info_score <- school_info_scor("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10"))
-harvard_info_treas <- school_info_treas("Harvard University", c("INSTNM", "MN_EARN_WNE_P10", "MD_EARN_WNE_P10"))
+# combines both
+school_info <- function(name, vector1, vector2) {
+  score <- school_info_scor(name, c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10"))
+  treas <- school_info_treas(name, c("INSTNM", "MN_EARN_WNE_P10", "MD_EARN_WNE_P10"))
+  left_join(score, treas, by="INSTNM")
+}
+
+# Example call
+harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10"), c("INSTNM", "MN_EARN_WNE_P10", "MD_EARN_WNE_P10"))
 
