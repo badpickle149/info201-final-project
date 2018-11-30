@@ -15,7 +15,7 @@ ui <- fluidPage(
              titlePanel("Compare Two Schools"),
              sidebarLayout(
                sidebarPanel(
-
+                    
                      selectizeInput(
                        "School1", label = NULL, choices = schools, multiple = TRUE,
                         options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
@@ -24,36 +24,53 @@ ui <- fluidPage(
                      selectizeInput(
                        "School2", label = NULL, choices = schools, multiple = TRUE,
                        options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
+                     ),
+                     
+                     checkboxGroupInput("SchoolOptions", label = "Options", 
+                                        choices = c("Median Total Grad Debt" -> "GRAD_DEBT_MDN_SUPP", 
+                                                    "Median Monthly Payment" -> "GRAD_DEBTMDN10YR_SUPP",
+                                                    "Median Earnings after Graduation" -> "MD_EARN_WNE_P10",
+                                                    "% Students Receiving Federal Loan" -> "PCTFLOAN",
+                                                    "% Students Receiving Pell Grant" -> "PCTPELL",
+                                                    "Number of Undergraduates" -> "UGDS",
+                                                    "School Website Link" -> "INSTURL")
+              
                      )
                    ),
                
                mainPanel(
                  fluidRow(
+                   
+                   ## Output for School 1
                    column(1,
-                     textOutput("school_title_1")
+                     textOutput("school_title_1"),
+                     tableOutput("school_summary_1")
                    ),
-                   column(2,
-                     textOutput("school_title_2")
+                   
+                   ## Output for School 2
+                   column(3,
+                     textOutput("school_title_2"),
+                     tableOutput("school_summary_2")
                    )
                  )
                )
              )
-             
-             ## Old layout
-             # sidebarLayout(
-             #   sidebarPanel(
-             # 
-             #     selectizeInput(
-             #       "Schools", label = NULL, choices = schools, multiple = TRUE,
-             #        options = list(placeholder = 'select a school', maxItems = 2, maxOptions = 8)
-             #       )
-             #   ),
-             #   mainPanel(
-             # 
-             #   )
-             # )
 
            )
+    
+    # tabsetPanel("Compare by State",
+    #   titlePanel("Compare Schools by States"),
+    #   sidebarLayout(
+    #     
+    #     sidebarPanel(
+    #       
+    #     ),
+    #     
+    #     mainPanel(
+    #       
+    #     )
+    #   )
+    # )
   )
   
 )
