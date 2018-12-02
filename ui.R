@@ -17,27 +17,18 @@ ui <- fluidPage(
                sidebarPanel(
                     
                      selectizeInput(
-                       "School1", label = NULL, choices = schools, multiple = TRUE,
+                       "School1", label = NULL, choices = schools, selected = "Harvard University",multiple = TRUE,
                         options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
                        ),
                      
                      selectizeInput(
-                       "School2", label = NULL, choices = schools, multiple = TRUE,
+                       "School2", label = NULL, choices = schools, selected = "Boston College",multiple = TRUE,
                        options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
                      ),
                      
-                     checkboxGroupInput("SchoolOptions", label = "Options", checkbox_choice_values
-                                        # choices = c("Median Total Grad Debt" -> "GRAD_DEBT_MDN_SUPP", 
-                                        #             "Median Monthly Payment" -> "GRAD_DEBTMDN10YR_SUPP",
-                                        #             "Median Earnings after Graduation" -> "MD_EARN_WNE_P10",
-                                        #             "% Students Receiving Federal Loan" -> "PCTFLOAN",
-                                        #             "% Students Receiving Pell Grant" -> "PCTPELL",
-                                        #             "Number of Undergraduates" -> "UGDS",
-                                        #             "School Website Link" -> "INSTURL")
-                                        
-                                        
-              
-                     )
+                     checkboxGroupInput("SchoolOptions", label = "Options", choiceNames = checkbox_choice_keys,
+                                        choiceValues = checkbox_choice_values,
+                                        selected = checkbox_choice_values)
                    ),
                
                mainPanel(

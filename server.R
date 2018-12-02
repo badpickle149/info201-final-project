@@ -8,13 +8,32 @@ get_school_name <- function(name) {
 ## Returns a vector to be passed to "school_info" func.
 ## Avoids error "Operation not allowed without an active reactive context."
 get_school_params <- function(input, type) {
-  split_options <- splitAt(input$SchoolOptions, 8)
-  score_options <- append(split_options[[1]],"INSTNM", after = 0)
-  treasury_options <- append(split_options[[2]],"INSTNM", after = 0)
+  # split_options <- splitAt(input$SchoolOptions, 8)
+  # score_options <- append(split_options[[1]],"INSTNM", after = 0)
+  # treasury_options <- append(split_options[[2]],"INSTNM", after = 0)
+  
+  score_options <- c()
+  treasury_options <- c()
+  
+  score_values <- c("Median Total Grad Debt", "Median Monthly Payment", "Median Earnings after Graduation", 
+             "% Students Receiving Federal Loan", "% Students Receiving Pell Grant", 
+             "Number of Undergraduates", "School Website Link")
+  
+  treasury_values <- c("Mean Earnings After College", "Unemployment Rate of Students After Graduation", 
+                "Poverty Rate of Students After Graduation")
+  
+  lapply(input$SchoolOptions, function(x) {
+    if (x %in% score_values) {
+      score_options <- append(score_options, x, after = 1)
+    } else if (x %in% treasury_values) {
+      treasury_options <- append(treasury_options, x, after = 1)
+    }
+  })
+  
   if (type == "score") {
-    return(score_options)
+    return(append(score_options, "INSTNM", after = 0))
   } else if (type == "treasury") {
-    return(treasury_options)
+    return(append(treasury_options, "INSTNM", after = 0))
   }
 }
 

@@ -16,5 +16,7 @@ school_info <- function(name, vector1, vector2) {
 }
 
 # Example call
-harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10", "PCTFLOAN", "PCTPELL"), c("INSTNM", "MN_EARN_WNE_P10", "MD_EARN_WNE_P10"))
+harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10", "PCTFLOAN", "PCTPELL", "UGDS", 
+                                                           "INSTURL"), 
+                       c("INSTNM", "MN_EARN_WNE_P10", "UNEMP_RATE", "POVERTY_RATE"))
 
