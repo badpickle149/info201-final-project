@@ -26,14 +26,16 @@ ui <- fluidPage(
                        options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
                      ),
                      
-                     checkboxGroupInput("SchoolOptions", label = "Options", 
-                                        choices = c("Median Total Grad Debt" -> "GRAD_DEBT_MDN_SUPP", 
-                                                    "Median Monthly Payment" -> "GRAD_DEBTMDN10YR_SUPP",
-                                                    "Median Earnings after Graduation" -> "MD_EARN_WNE_P10",
-                                                    "% Students Receiving Federal Loan" -> "PCTFLOAN",
-                                                    "% Students Receiving Pell Grant" -> "PCTPELL",
-                                                    "Number of Undergraduates" -> "UGDS",
-                                                    "School Website Link" -> "INSTURL")
+                     checkboxGroupInput("SchoolOptions", label = "Options", checkbox_choice_values
+                                        # choices = c("Median Total Grad Debt" -> "GRAD_DEBT_MDN_SUPP", 
+                                        #             "Median Monthly Payment" -> "GRAD_DEBTMDN10YR_SUPP",
+                                        #             "Median Earnings after Graduation" -> "MD_EARN_WNE_P10",
+                                        #             "% Students Receiving Federal Loan" -> "PCTFLOAN",
+                                        #             "% Students Receiving Pell Grant" -> "PCTPELL",
+                                        #             "Number of Undergraduates" -> "UGDS",
+                                        #             "School Website Link" -> "INSTURL")
+                                        
+                                        
               
                      )
                    ),
