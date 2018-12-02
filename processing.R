@@ -5,22 +5,13 @@ library(dplyr)
 scorecard <- read.csv("data/Most-Recent-Cohorts-Scorecard-Elements.csv", stringsAsFactors = FALSE, header=TRUE, sep=",")
 treasury <- read.csv("data/Most-Recent-Cohorts-Treasury-Elements.csv", stringsAsFactors = FALSE, header=TRUE, sep="," )
 
-# For scorecard data. Input school name and vector of criteria to view
-school_info_scor <- function(name, vector) {
-  df <- scorecard %>% filter(INSTNM == name) %>%
-  select_(.dots=vector)
-}
-
-# For treasury data. Input school name and vector of criteria to view
-school_info_treas <- function(name, vector) {
-  df <- treasury %>% filter(INSTNM == name) %>%
-    select_(.dots=vector)
-}
-
-# combines both
+# Input name of school, and two vectors with the name of criteria to view. Vector 1 is criteria from
+# the scorecard csv , vector 2 from the treasuary csv. Returns a dataframe with relevant info
 school_info <- function(name, vector1, vector2) {
-  score <- school_info_scor(name, vector1)
-  treas <- school_info_treas(name, vector2)
+  score <- scorecard %>% filter(INSTNM == name) %>%
+    select_(.dots=vector1)
+  treas <- treasury %>% filter(INSTNM == name) %>%
+    select_(.dots=vector2)
   left_join(score, treas, by="INSTNM")
 }
 
