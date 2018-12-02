@@ -1,45 +1,24 @@
-## this is the file for getting the data from the API and data wrangling
+# Processing the csv files
 
-## this function accepts a list "params" which is a list of the
-## query parameters needed for a call to the college scorecard API
-## returns a list of length 2 where the element "metadata" is a list
-## describing the data and "results" is a dataframe of the results
-
-library(httr)
-library(jsonlite)
 library(dplyr)
 
-key = "WxdDlU0dc1U3VPeVJ0Ke2G7QSTPENsSMAfnFKVHV"
+scorecard <- read.csv("data/Most-Recent-Cohorts-Scorecard-Elements.csv", stringsAsFactors = FALSE, header=TRUE, sep=",")
+treasury <- read.csv("data/Most-Recent-Cohorts-Treasury-Elements.csv", stringsAsFactors = FALSE, header=TRUE, sep="," )
 
-get_dataset <- function(params) {
-  base <- "https://api.data.gov/ed/collegescorecard"
-  uri <- paste(base, "v1/schools", sep = "/")
-  res <- httr::GET(uri, query=params)
-  body <- content(res, "text")
-  parsed_data <- fromJSON(body)
-  return(parsed_data)
+# Input name of school, and two vectors with the name of criteria to view. Vector 1 is criteria from
+# the scorecard csv , vector 2 from the treasuary csv. Returns a dataframe with relevant info
+school_info <- function(name, vector1, vector2) {
+  score <- scorecard %>% filter(INSTNM == name) %>%
+    select_(.dots=vector1)
+  treas <- treasury %>% filter(INSTNM == name) %>%
+    select_(.dots=vector2)
+  ret <- left_join(score, treas, by="INSTNM")
+  return(ret)
 }
 
-# returns the data for a specific school
-data_school <- function(school){
-  params <- list(school.name = school, api_key = key)
-  data <- get_dataset(params)
-  data <- data$results
-}
+# Example call
+harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10", "PCTFLOAN", "PCTPELL", "UGDS", 
+                                               "INSTURL"), 
+                       c("INSTNM", "MN_EARN_WNE_P10", "UNEMP_RATE", "POVERTY_RATE"))
 
-compare_schools <- function(school1, school2) {
-  school1_data <- data_school(school1)
-  school2_data <- data_school(school2)
-  school1_avg_price <- school1_data$latest$cost$avg_net_price.overall
-  school2_avg_price <- school2_data$latest$cost$avg_net_price.overall
-  
-  combined_data <- inner_join(school1_avg_price, school2_avg_price, by = avg_net_price.overall)
-}
 
-boston <- data_school("boston college")
-boston_admission_details <- head(boston$latest$admissions, 100)
-boston_cost_details <- boston$`2012`$cost
-boston_financial_aid <- boston$latest$aid
-school_sum <- summary(boston_cost_details %>% head(1))
-
-compare <- compare_schools("boston college", "harvard university")
