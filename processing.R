@@ -9,6 +9,11 @@ library(httr)
 library(jsonlite)
 library(dplyr)
 
+college_data <- read.csv("data/Most-Recent-Cohorts-Scorecard-Elements.csv", stringsAsFactors = FALSE)
+post_college_data <- read.csv("data/Most-Recent-Cohorts-Scorecard-Elements.csv")
+
+
+
 key = "WxdDlU0dc1U3VPeVJ0Ke2G7QSTPENsSMAfnFKVHV"
 
 get_dataset <- function(params) {
