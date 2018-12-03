@@ -1,4 +1,4 @@
-## this is the file for getting the data from the API and data wrangling
+# Processing the csv files
 
 ## this function accepts a list "params" which is a list of the
 ## query parameters needed for a call to the college scorecard API
@@ -7,12 +7,43 @@
 
 library(dplyr)
 
-scorecard <- read.csv("./data/Most-Recent-Cohorts-Scorecard-Elements.csv")
-treasury <- read.csv("./data/Most-Recent-Cohorts-Treasury-Elements.csv")
+scorecard <- read.csv("data/Most-Recent-Cohorts-Scorecard-Elements.csv", stringsAsFactors = FALSE, header=TRUE, sep=",")
+treasury <- read.csv("data/Most-Recent-Cohorts-Treasury-Elements.csv", stringsAsFactors = FALSE, header=TRUE, sep="," )
 
-find_school <- function(name)   {
-  scorecard %>% filter(name)
+checkbox_choice_values <- c("GRAD_DEBT_MDN_SUPP", ##"GRAD_DEBTMDN10YR_SUPP", 
+                            "MD_EARN_WNE_P10", "PCTFLOAN", "PCTPELL", "UGDS", 
+                            "INSTURL", "MN_EARN_WNE_P10", "UNEMP_RATE", "POVERTY_RATE")
+
+# Input name of school, and two vectors with the name of criteria to view. Vector 1 is criteria from
+# the scorecard csv , vector 2 from the treasuary csv. Returns a dataframe with relevant info
+school_info <- function(name, vector1, vector2) {
+  score <- scorecard %>% filter(INSTNM == name) %>%
+    select_(.dots=vector1)
+  treas <- treasury %>% filter(INSTNM == name) %>%
+    select_(.dots=vector2)
+  ret <- left_join(score, treas, by="INSTNM")
+  return(ret)
 }
+
+replace_col_names <- function(df) {
+  for (x in names(df)) {
+    if (!is.na(match(x, checkbox_choice_values))) {
+      index = match(x, checkbox_choice_values)
+      if (length(fields) > 0) {
+        append(checkbox_choice_values[[index]], fields, after = 0)
+      } else {
+        append(checkbox_choice_values[[index]], fields, after = 1)
+      }
+    }
+  }
+  names(df) <- fields
+  return(df)
+}
+
+# Example call
+harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP", "MD_EARN_WNE_P10", "PCTFLOAN", "PCTPELL", "UGDS", 
+                                               "INSTURL"), 
+                       c("INSTNM", "MN_EARN_WNE_P10", "UNEMP_RATE", "POVERTY_RATE"))
 
 list_best_schools <- function(selected_state)  {
   treasury_min <- treasury %>% select(INSTNM, MN_EARN_WNE_INC1_P10, 
@@ -37,11 +68,11 @@ list_best_schools <- function(selected_state)  {
                                             STABBR, GRAD_DEBT_MDN_SUPP)
   combined_min <- combined_min %>% filter(STABBR == selected_state)
   combined_min <- combined_min %>% mutate(mean_total = ((as.numeric(as.character(MN_EARN_WNE_INC1_P10)) +
-                                                        as.numeric(as.character(MN_EARN_WNE_INC2_P10)) +
-                                                        as.numeric(as.character(MN_EARN_WNE_INC3_P10))) / 3))
+                                                           as.numeric(as.character(MN_EARN_WNE_INC2_P10)) +
+                                                           as.numeric(as.character(MN_EARN_WNE_INC3_P10))) / 3))
   combined_min <- combined_min %>% mutate(roi = ((as.numeric(as.character(mean_total)) + 
-                                                 as.numeric(as.character(MD_EARN_WNE_P10))) / 
-                                                 (2 * as.numeric(as.character(GRAD_DEBT_MDN_SUPP)))))
+                                                    as.numeric(as.character(MD_EARN_WNE_P10))) / 
+                                                   (2 * as.numeric(as.character(GRAD_DEBT_MDN_SUPP)))))
   best_schools <- combined_min %>% select(INSTNM, mean_total, MD_EARN_WNE_P10, GRAD_DEBT_MDN_SUPP, roi)
   best_schools <- best_schools %>% arrange(desc(roi)) %>% head(8)
   return(best_schools)
