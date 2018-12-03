@@ -5,8 +5,6 @@ get_school_name <- function(name) {
   name
 }
 
-
-
 ## Returns a vector to be passed to "school_info" func.
 ## Avoids error "Operation not allowed without an active reactive context."
 get_school_params <- function(options, type) {
@@ -56,7 +54,7 @@ server <- function(input, output, session) {
                       get_school_params(input$SchoolOptions, "treasury")
                      )
     return(df)
-  })
+  }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
   ## Show school 2 name
   output$school_title_2 <- renderText({
       name <- get_school_name(input$School2)
@@ -68,5 +66,6 @@ server <- function(input, output, session) {
                 get_school_params(input$SchoolOptions, "score"), 
                 get_school_params(input$SchoolOptions, "treasury")
                 )
-  })
+  }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
+
 }

@@ -6,7 +6,6 @@ source("ui-processing.R")
 ui <- fluidPage(
   titlePanel("Which School is Right For You?"),
   tabsetPanel(
-    
     ## Compare Two Schools Tab
     tabPanel(
       "Compare Schools",
@@ -33,20 +32,24 @@ ui <- fluidPage(
         ),
         mainPanel(
           fluidRow(
-            
-            ## Output for School 1
-            column(
-              1,
-              textOutput("school_title_1"),
-              tableOutput("school_summary_1")
-            ),
-            
-            ## Output for School 2
-            column(
-              3,
-              textOutput("school_title_2"),
-              tableOutput("school_summary_2")
-            )
+            textOutput("school_title_1"),
+            tableOutput("school_summary_1"),
+            textOutput("school_title_2"),
+            tableOutput("school_summary_2")
+            # 
+            # ## Output for School 1
+            # column(
+            #   1,
+            #   textOutput("school_title_1"),
+            #   tableOutput("school_summary_1")
+            # ),
+            # 
+            # ## Output for School 2
+            # column(
+            #   3,
+            #   textOutput("school_title_2"),
+            #   tableOutput("school_summary_2")
+            # )
           )
         )
       )
