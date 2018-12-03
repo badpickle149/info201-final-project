@@ -54,7 +54,7 @@ server <- function(input, output, session) {
                       get_school_params(input$SchoolOptions, "treasury")
                      )
     return(df)
-  })
+  }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
   ## Show school 2 name
   output$school_title_2 <- renderText({
       name <- get_school_name(input$School2)
@@ -66,6 +66,6 @@ server <- function(input, output, session) {
                 get_school_params(input$SchoolOptions, "score"), 
                 get_school_params(input$SchoolOptions, "treasury")
                 )
-  })
+  }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
 
 }
