@@ -36,34 +36,32 @@ server <- function(input, output, session) {
     input$School1
   }) 
   ## Show school 2 name
-  output$school_summary_1 <-renderTable({
+  school1_df <- reactive({
     df <- school_info(input$School1, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
-                     )
+    )
     names(df) <- name_key[names(df)]
     df_temp <- df[,-1]
     rownames(df_temp) <- df[,1]
     df <- t(df_temp)
     df <- cbind(Categories = rownames(df), df)
-    return(df)
-  }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
-  ## Show school 2 name
-  output$school_title_2 <- renderText({
-    input$School2
-  }) 
-  ## Show School 2 Data (nees work)
-  output$school_summary_2 <- renderTable({
+  })
+  school2_df <- reactive({
     df <- school_info(input$School2, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
-                     )
+    )
     names(df) <- name_key[names(df)]
     df_temp <- df[,-1]
     rownames(df_temp) <- df[,1]
     df <- t(df_temp)
     df <- cbind(Categories = rownames(df), df)
-    return(df)
+  })
+  output$school_comparison <- renderTable({
+    school1 <- school1_df()
+    school2 <- school2_df()
+    df <- merge(school1, school2)
   }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
   
   output$top_schools <- renderTable({
