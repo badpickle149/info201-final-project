@@ -67,5 +67,11 @@ server <- function(input, output, session) {
                 get_school_params(input$SchoolOptions, "treasury")
                 )
   }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
+  
+  output$top_schools <- renderTable({
+    df <- list_best_schools(input$states, input$num_rows)
+    names(df) <- c("College", "Mean Earnings ($)", "Median Earnings ($)", "Median Graduation Debt ($)")
+    return(df)
+  }, striped = TRUE)
 
 }

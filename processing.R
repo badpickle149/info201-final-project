@@ -45,7 +45,7 @@ harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP", "
                                                "INSTURL"), 
                        c("INSTNM", "MN_EARN_WNE_P10", "UNEMP_RATE", "POVERTY_RATE"))
 
-list_best_schools <- function(selected_state)  {
+list_best_schools <- function(selected_state, num_rows)  {
   treasury_min <- treasury %>% select(INSTNM, MN_EARN_WNE_INC1_P10, 
                                       MN_EARN_WNE_INC2_P10, MN_EARN_WNE_INC3_P10,
                                       UNEMP_RATE, MD_EARN_WNE_P10)
@@ -74,6 +74,7 @@ list_best_schools <- function(selected_state)  {
                                                     as.numeric(as.character(MD_EARN_WNE_P10))) / 
                                                    (2 * as.numeric(as.character(GRAD_DEBT_MDN_SUPP)))))
   best_schools <- combined_min %>% select(INSTNM, mean_total, MD_EARN_WNE_P10, GRAD_DEBT_MDN_SUPP, roi)
-  best_schools <- best_schools %>% arrange(desc(roi)) %>% head(8)
+  best_schools <- best_schools %>% arrange(desc(roi)) %>% head(num_rows)
+  best_schools <- best_schools %>% select(INSTNM, mean_total, MD_EARN_WNE_P10, GRAD_DEBT_MDN_SUPP)
   return(best_schools)
 }
