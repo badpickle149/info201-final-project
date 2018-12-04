@@ -12,16 +12,17 @@ ui <- fluidPage(
       titlePanel("Compare Two Schools"),
       sidebarLayout(
         sidebarPanel(
+          ## widget to select first school
           selectizeInput(
             "School1", label = NULL, choices = schools, selected = "Harvard University",multiple = TRUE,
             options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
           ),
-          
+          ## widget to select second school
           selectizeInput(
             "School2", label = NULL, choices = schools, selected = "Boston College",multiple = TRUE,
             options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
           ),
-          
+          ## widget to select categories to be shown
           checkboxGroupInput(
             "SchoolOptions", 
             label = "Options", 
@@ -32,10 +33,12 @@ ui <- fluidPage(
         ),
         mainPanel(
           fluidRow(
+            ## outputs comparison table using information from above widgets
             tableOutput("school_comparison"),
-            textOutput("school_title_1"),
-            tableOutput("school_summary_1"),
-            textOutput("school_title_2")
+            ## shows plots for earnings and debt after college respectfully
+            ## uses two school selector widgets to show plots
+            plotOutput("plot_earnings"),
+            plotOutput("plot_debt")
           )
         )
       )
@@ -48,11 +51,13 @@ ui <- fluidPage(
       sidebarLayout(
 
         sidebarPanel(
+          ## select a state widget
           selectInput(
             "states",
             "Select a State of Interest",
             choices = state.abb
           ),
+          ## slider widget let's users choose how many results to display
           sliderInput(
             "num_rows",
             "Number of Schools to Display",
@@ -63,6 +68,7 @@ ui <- fluidPage(
         ),
 
         mainPanel(
+          ## outputs table using above widgets
           tableOutput("top_schools")
         )
       )
