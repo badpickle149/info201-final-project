@@ -1,0 +1,12 @@
+name: info201-final-project
+title: info201-final-project
+username:
+account: ann-ss
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 602181
+bundleId: 1737857
+url: https://ann-ss.shinyapps.io/info201-final-project/
+when: 1543886734.6888
+asMultiple: FALSE
+asStatic: FALSE

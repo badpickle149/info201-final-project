@@ -53,22 +53,33 @@ ui <- fluidPage(
           )
         )
       )
-    )#,
-    #
-    # Compare by state tab
-    # tabPanel(
-    #   "Compare by State",
-    #   titlePanel("Compare Schools by States"),
-    #   sidebarLayout(
-    # 
-    #     sidebarPanel(
-    # 
-    #     ),
-    # 
-    #     mainPanel(
-    # 
-    #     )
-    #   )
-    # )
+    ),
+
+    ## Compare by state tab
+    tabPanel(
+      "Compare by State",
+      titlePanel("Compare Schools by States"),
+      sidebarLayout(
+
+        sidebarPanel(
+          selectInput(
+            "states",
+            "Select a State of Interest",
+            choices = state.abb
+          ),
+          sliderInput(
+            "num_rows",
+            "Number of Schools to Display",
+            min = 1,
+            max = 30,
+            value = 10
+          )
+        ),
+
+        mainPanel(
+          tableOutput("top_schools")
+        )
+      )
+    )
   )
 )
