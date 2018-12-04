@@ -12,10 +12,6 @@ get_school_name <- function(name) {
 ## Returns a vector to be passed to "school_info" func.
 ## Avoids error "Operation not allowed without an active reactive context."
 get_school_params <- function(options, type) {
-  # split_options <- splitAt(input$SchoolOptions, 8)
-  # score_options <- append(split_options[[1]],"INSTNM", after = 0)
-  # treasury_options <- append(split_options[[2]],"INSTNM", after = 0)
-  
   score_options <- c()
   treasury_options <- c()
   
@@ -62,42 +58,37 @@ graph_debt_vs_salary <- function(school1, school2, option) {
 }  
 
 server <- function(input, output, session) {
-  
+  ## Show school 1 name
   output$school_title_1 <- renderText({
-    name <- get_school_name(input$School1)
-    return(name)
-  }) ## Show School 1 name
-  ## Show School 1 Data (nees work)
-
-  output$school_summary_1 <-renderTable({
+    input$School1
+  }) 
+  ## Show school 2 name
+  school1_df <- reactive({
     df <- school_info(input$School1, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
-                     )
+    )
     names(df) <- name_key[names(df)]
     df_temp <- df[,-1]
     rownames(df_temp) <- df[,1]
     df <- t(df_temp)
     df <- cbind(Categories = rownames(df), df)
-    return(df)
-  }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
-  ## Show school 2 name
-  output$school_title_2 <- renderText({
-      name <- get_school_name(input$School2)
-      return(name)
-    }) 
-  ## Show School 2 Data (nees work)
-  output$school_summary_2 <- renderTable({
+  })
+  school2_df <- reactive({
     df <- school_info(input$School2, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
-                     )
+    )
     names(df) <- name_key[names(df)]
     df_temp <- df[,-1]
     rownames(df_temp) <- df[,1]
     df <- t(df_temp)
     df <- cbind(Categories = rownames(df), df)
-    return(df)
+  })
+  output$school_comparison <- renderTable({
+    school1 <- school1_df()
+    school2 <- school2_df()
+    df <- merge(school1, school2)
   }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
   
   output$top_schools <- renderTable({
