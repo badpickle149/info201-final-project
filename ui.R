@@ -32,12 +32,10 @@ ui <- fluidPage(
         ),
         mainPanel(
           fluidRow(
+            tableOutput("school_comparison"),
             textOutput("school_title_1"),
             tableOutput("school_summary_1"),
-            textOutput("school_title_2"),
-            tableOutput("school_summary_2")
-            #plotOutput("plot_earnings"),
-            #plotOutput("plot_debt")
+            textOutput("school_title_2")
           )
         )
       )
@@ -45,7 +43,7 @@ ui <- fluidPage(
 
     ## Compare by state tab
     tabPanel(
-      "Compare by State",
+      "Return on Investment by State",
       titlePanel("Compare Schools by States"),
       sidebarLayout(
 
@@ -68,6 +66,22 @@ ui <- fluidPage(
           tableOutput("top_schools")
         )
       )
+    ),
+    tabPanel(
+      "Our App",
+      titlePanel("Our App"),
+      p("Which School is Right For You is created for prospective university students who want
+      to choose their future college or university with financial information in mind. We 
+      provide relevant facts and figures about the financial aid, earnings, and debt for 
+      over 7000 undergraduate schools in the United States."),
+      
+      strong("Our Data"),
+      p("Up to date information is accessed from the United States Department of Education’s 
+        College Scorecard, a public resource which includes financial data for all undergraduate 
+        degree-granting institutions of higher education. We display and break down this data using
+        our return on investment formula to rank the value of schools by state and make it easier 
+        for you to make the right choice.")
+      
     )
   )
 )

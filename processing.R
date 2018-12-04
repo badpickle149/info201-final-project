@@ -31,8 +31,7 @@ school_info <- function(name, vector1, vector2) {
     select_(.dots=vector1)
   treas <- treasury %>% filter(INSTNM == name) %>%
     select_(.dots=vector2)
-  ret <- left_join(score, treas, by="INSTNM")
-  return(ret)
+  left_join(score, treas, by="INSTNM")
 }
 
 replace_col_names <- function(df) {
