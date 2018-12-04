@@ -1,17 +1,8 @@
 source("processing.R")
 
-## Returns name of school. Avoids error "Operation not allowed without an active reactive context."
-get_school_name <- function(name) {
-  name
-}
-
 ## Returns a vector to be passed to "school_info" func.
 ## Avoids error "Operation not allowed without an active reactive context."
 get_school_params <- function(options, type) {
-  # split_options <- splitAt(input$SchoolOptions, 8)
-  # score_options <- append(split_options[[1]],"INSTNM", after = 0)
-  # treasury_options <- append(split_options[[2]],"INSTNM", after = 0)
-  
   score_options <- c()
   treasury_options <- c()
   
@@ -40,13 +31,11 @@ get_school_params <- function(options, type) {
 splitAt <- function(x, pos) unname(split(x, cumsum(seq_along(x) %in% pos)))
 
 server <- function(input, output, session) {
-  
+  ## Show school 1 name
   output$school_title_1 <- renderText({
-    name <- get_school_name(input$School1)
-    return(name)
-  }) ## Show School 1 name
-  ## Show School 1 Data (nees work)
-
+    input$School1
+  }) 
+  ## Show school 2 name
   output$school_summary_1 <-renderTable({
     df <- school_info(input$School1, 
                       get_school_params(input$SchoolOptions, "score"), 
@@ -61,9 +50,8 @@ server <- function(input, output, session) {
   }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
   ## Show school 2 name
   output$school_title_2 <- renderText({
-      name <- get_school_name(input$School2)
-      return(name)
-    }) 
+    input$School2
+  }) 
   ## Show School 2 Data (nees work)
   output$school_summary_2 <- renderTable({
     df <- school_info(input$School2, 

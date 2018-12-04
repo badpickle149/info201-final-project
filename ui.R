@@ -57,7 +57,7 @@ ui <- fluidPage(
 
     ## Compare by state tab
     tabPanel(
-      "Compare by State",
+      "Return on Investment by State",
       titlePanel("Compare Schools by States"),
       sidebarLayout(
 
