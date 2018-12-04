@@ -1,5 +1,9 @@
 source("processing.R")
 
+library(ggplot2)
+library(dplyr)
+library(scales)
+
 ## Returns name of school. Avoids error "Operation not allowed without an active reactive context."
 get_school_name <- function(name) {
   name
@@ -36,8 +40,26 @@ get_school_params <- function(options, type) {
   return(ret_vect) ## this is not expected behavior
 }
 
-## split a vector in two at an index
-splitAt <- function(x, pos) unname(split(x, cumsum(seq_along(x) %in% pos)))
+graph_debt_vs_salary <- function(school1, school2, option) {
+  school1_data <- school_info(school1, c("INSTNM", "GRAD_DEBT_MDN_SUPP"), c("INSTNM" ,"MN_EARN_WNE_P10"))
+  school2_data <- school_info(school2, c("INSTNM" ,"GRAD_DEBT_MDN_SUPP"), c("INSTNM" ,"MN_EARN_WNE_P10"))
+  df <- rbind(school1_data, school2_data)
+  df$GRAD_DEBT_MDN_SUPP <- as.numeric(df$GRAD_DEBT_MDN_SUPP)
+  df$MN_EARN_WNE_P10 <- as.numeric(df$MN_EARN_WNE_P10)
+  names(df) <- c("School Name", "Total Debt After Graduation ($)", "Earning/yr After Graduation ($)")
+  if (option == "Debt") {
+    plot <- ggplot(data=df, aes(x=`School Name`, y=`Total Debt After Graduation ($)`)) +
+      geom_bar(stat="identity" ,fill="steelblue") +
+      geom_text(aes(label=`School Name`), vjust=1.6, color="white", size=3.5) +
+      theme_minimal() + scale_y_continuous(labels = comma)
+  } else {
+    plot <- ggplot(data=df, aes(x=`School Name`, y=`Earning/yr After Graduation ($)`)) +
+      geom_bar(stat="identity" ,fill="steelblue") +
+      geom_text(aes(label=`School Name`), vjust=1.6, color="white", size=3.5) +
+      theme_minimal() + scale_y_continuous(labels = comma)
+  }
+  return(plot)
+}  
 
 server <- function(input, output, session) {
   
