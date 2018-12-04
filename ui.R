@@ -33,6 +33,13 @@ ui <- fluidPage(
         mainPanel(
           fluidRow(
             tableOutput("school_comparison")
+            textOutput("school_title_1"),
+            tableOutput("school_summary_1"),
+            textOutput("school_title_2"),
+            tableOutput("school_summary_2"),
+            plotOutput("plot_earnings"),
+            plotOutput("plot_debt")
+
           )
         )
       )
