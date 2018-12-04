@@ -80,6 +80,22 @@ ui <- fluidPage(
           tableOutput("top_schools")
         )
       )
+    ),
+    tabPanel(
+      "Our App",
+      titlePanel("Our App"),
+      p("Which School is Right For You is created for prospective university students who want
+      to choose their future college or university with financial information in mind. We 
+      provide relevant facts and figures about the financial aid, earnings, and debt for 
+      over 7000 undergraduate schools in the United States."),
+      
+      strong("Our Data"),
+      p("Up to date information is accessed from the United States Department of Education’s 
+        College Scorecard, a public resource which includes financial data for all undergraduate 
+        degree-granting institutions of higher education. We display and break down this data using
+        our return on investment formula to rank the value of schools by state and make it easier 
+        for you to make the right choice.")
+      
     )
   )
 )
