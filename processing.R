@@ -13,6 +13,16 @@ treasury <- read.csv("data/Most-Recent-Cohorts-Treasury-Elements.csv", stringsAs
 checkbox_choice_values <- c("GRAD_DEBT_MDN_SUPP", ##"GRAD_DEBTMDN10YR_SUPP", 
                             "MD_EARN_WNE_P10", "PCTFLOAN", "PCTPELL", "UGDS", 
                             "INSTURL", "MN_EARN_WNE_P10", "UNEMP_RATE", "POVERTY_RATE")
+name_key <- c(INSTNM = "College",
+              GRAD_DEBT_MDN_SUPP = "Median Total Grad Debt",
+              MD_EARN_WNE_P10 = "Median Earnings after Graduation", 
+              PCTFLOAN = "% Students Receiving Federal Loan", 
+              PCTPELL = "% Students Receiving Pell Grant", 
+              UGDS = "Number of Undergraduates", 
+              INSTURL = "School Website Link",
+              MN_EARN_WNE_P10 = "Mean Earnings After College", 
+              UNEMP_RATE = "Unemployment Rate of Students After Graduation", 
+              POVERTY_RATE = "Poverty Rate of Students After Graduation")
 
 # Input name of school, and two vectors with the name of criteria to view. Vector 1 is criteria from
 # the scorecard csv , vector 2 from the treasuary csv. Returns a dataframe with relevant info
