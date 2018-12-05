@@ -4,11 +4,6 @@ library(ggplot2)
 library(dplyr)
 library(scales)
 
-## Returns name of school. Avoids error "Operation not allowed without an active reactive context."
-get_school_name <- function(name) {
-  name
-}
-
 ## Returns a vector to be passed to "school_info" func.
 get_school_params <- function(options, type) {
   score_options <- c()
@@ -63,7 +58,9 @@ graph_debt_vs_salary <- function(school1, school2, option) {
 }  
 
 server <- function(input, output, session) {
-  error_msg_schools <- "Please select two schools to compare. If you don't need a second school, you can choose the same school again."
+  error_msg_schools <- paste0("Please select two schools to compare. ", 
+                              "If you don't need a second school, ",
+                              "you can choose the same school again.")
   error_msg_options <- "Please select at least two options to compare."
   
   school1_df <- reactive({

@@ -3,6 +3,14 @@ library(shiny)
 ## setwd("C:/Users/picklewoman/Documents/INFO201/assignments/info201-final-project")
 
 source("ui-processing.R")
+
+state_ranking_descr <- paste0("This table shows the schools of your selected ",
+                             "state ranked by average return on investment. ", 
+                             "In this case return on investment is calculated",
+                             " by taking the average earnings of a graduate ",
+                             "after 10 years and dividing that by the ",
+                             "average debt at graduation.")
+
 ui <- fluidPage(
   titlePanel("Which School is Right For You?"),
   tabsetPanel(
@@ -12,17 +20,16 @@ ui <- fluidPage(
       titlePanel("Compare Two Schools"),
       sidebarLayout(
         sidebarPanel(
-          ## widget to select first school
           selectizeInput(
             "School1", label = NULL, choices = schools, selected = "Harvard University",multiple = TRUE,
             options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
           ),
-          ## widget to select second school
+          
           selectizeInput(
             "School2", label = NULL, choices = schools, selected = "Boston College",multiple = TRUE,
             options = list(placeholder = 'select a school', maxItems = 1, maxOptions = 8)
           ),
-          ## widget to select categories to be shown
+          
           checkboxGroupInput(
             "SchoolOptions", 
             label = "Options", 
@@ -33,12 +40,7 @@ ui <- fluidPage(
         ),
         mainPanel(
           fluidRow(
-            ## outputs comparison table using information from above widgets
-            tableOutput("school_comparison"),
-            ## shows plots for earnings and debt after college respectfully
-            ## uses two school selector widgets to show plots
-            plotOutput("plot_earnings"),
-            plotOutput("plot_debt")
+            tableOutput("school_comparison")
           )
         )
       )
@@ -51,24 +53,22 @@ ui <- fluidPage(
       sidebarLayout(
 
         sidebarPanel(
-          ## select a state widget
           selectInput(
             "states",
             "Select a State of Interest",
             choices = state.abb
           ),
-          ## slider widget let's users choose how many results to display
           sliderInput(
             "num_rows",
             "Number of Schools to Display",
             min = 1,
             max = 30,
             value = 10
-          )
+          ),
+          helpText(state_ranking_descr)
         ),
 
         mainPanel(
-          ## outputs table using above widgets
           tableOutput("top_schools")
         )
       )
