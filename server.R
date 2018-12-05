@@ -1,17 +1,16 @@
 source("processing.R")
 
+library(ggplot2)
+library(dplyr)
+library(scales)
+
 ## Returns name of school. Avoids error "Operation not allowed without an active reactive context."
 get_school_name <- function(name) {
   name
 }
 
 ## Returns a vector to be passed to "school_info" func.
-## Avoids error "Operation not allowed without an active reactive context."
 get_school_params <- function(options, type) {
-  # split_options <- splitAt(input$SchoolOptions, 8)
-  # score_options <- append(split_options[[1]],"INSTNM", after = 0)
-  # treasury_options <- append(split_options[[2]],"INSTNM", after = 0)
-  
   score_options <- c()
   treasury_options <- c()
   
@@ -36,46 +35,75 @@ get_school_params <- function(options, type) {
   return(ret_vect) ## this is not expected behavior
 }
 
-## split a vector in two at an index
-splitAt <- function(x, pos) unname(split(x, cumsum(seq_along(x) %in% pos)))
+## returns a plot of either Earnings for each school or Debt for each school
+## use "option" param to specify Earnings or Debt
+graph_debt_vs_salary <- function(school1, school2, option) {
+  ## get debt and earning info from each school
+  school1_data <- school_info(school1, c("INSTNM", "GRAD_DEBT_MDN_SUPP"), c("INSTNM" ,"MN_EARN_WNE_P10"))
+  school2_data <- school_info(school2, c("INSTNM" ,"GRAD_DEBT_MDN_SUPP"), c("INSTNM" ,"MN_EARN_WNE_P10"))
+  ## make one data frame. Makes plotting easier
+  df <- rbind(school1_data, school2_data)
+  ## change debt and earnings columns to "numeric" type
+  df$GRAD_DEBT_MDN_SUPP <- as.numeric(df$GRAD_DEBT_MDN_SUPP)
+  df$MN_EARN_WNE_P10 <- as.numeric(df$MN_EARN_WNE_P10)
+  ## rename columns to more accessible names
+  names(df) <- c("School Name", "Total Debt After Graduation ($)", "Earning/yr After Graduation ($)")
+  if (option == "Debt") { ## plots a Debt comparison bar graph
+    plot <- ggplot(data=df, aes(x=`School Name`, y=`Total Debt After Graduation ($)`)) +
+      geom_bar(stat="identity" ,fill="steelblue") +
+      geom_text(aes(label=`Total Debt After Graduation ($)`), vjust=1.6, color="white", size=6.0) +
+      theme_minimal() + scale_y_continuous(labels = comma)
+  } else { ## plots an Earnings comparison bar graph
+    plot <- ggplot(data=df, aes(x=`School Name`, y=`Earning/yr After Graduation ($)`)) +
+      geom_bar(stat="identity" ,fill="steelblue") +
+      geom_text(aes(label=`Earning/yr After Graduation ($)`), vjust=1.6, color="white", size=6.0) +
+      theme_minimal() + scale_y_continuous(labels = comma)
+  }
+  return(plot)
+}  
 
 server <- function(input, output, session) {
+  error_msg_schools <- "Please select two schools to compare. If you don't need a second school, you can choose the same school again."
+  error_msg_options <- "Please select at least two options to compare."
   
-  output$school_title_1 <- renderText({
-    name <- get_school_name(input$School1)
-    return(name)
-  }) ## Show School 1 name
-  ## Show School 1 Data (nees work)
-
-  output$school_summary_1 <-renderTable({
+  school1_df <- reactive({
+    validate(
+      need(input$School1, error_msg_schools),
+      need(length(input$SchoolOptions) >= 2, error_msg_options)
+    )
     df <- school_info(input$School1, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
-                     )
+    )
     names(df) <- name_key[names(df)]
     df_temp <- df[,-1]
     rownames(df_temp) <- df[,1]
     df <- t(df_temp)
     df <- cbind(Categories = rownames(df), df)
-    return(df)
-  }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
-  ## Show school 2 name
-  output$school_title_2 <- renderText({
-      name <- get_school_name(input$School2)
-      return(name)
-    }) 
-  ## Show School 2 Data (nees work)
-  output$school_summary_2 <- renderTable({
+  })
+  school2_df <- reactive({
+    validate(
+      need(input$School2, error_msg_schools),
+      need(length(input$SchoolOptions) >= 2, error_msg_options)
+    )
     df <- school_info(input$School2, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
-                     )
+    )
     names(df) <- name_key[names(df)]
     df_temp <- df[,-1]
     rownames(df_temp) <- df[,1]
     df <- t(df_temp)
     df <- cbind(Categories = rownames(df), df)
-    return(df)
+  })
+  output$school_comparison <- renderTable({
+    validate(
+      need(school1_df(), error_msg_schools),
+      need(school2_df(), error_msg_schools)
+    )
+    school1 <- school1_df()
+    school2 <- school2_df()
+    df <- merge(school1, school2)
   }, striped = TRUE, bordered = TRUE, spacing = c("m"), colnames = TRUE)
   
   output$top_schools <- renderTable({
@@ -85,5 +113,22 @@ server <- function(input, output, session) {
                    "Median Graduation Debt ($)")
     return(df)
   }, striped = TRUE)
-
+  
+  ## plot to compare earnings after graduating from each school
+  output$plot_earnings <- renderPlot({
+    validate(
+      need(input$School1, error_msg_schools),
+      need(input$School2, error_msg_schools)
+    )
+    graph_debt_vs_salary(input$School1, input$School2, "Earnings")
+  })
+  
+  ## plot to compare debt after graduating from each school
+  output$plot_debt <- renderPlot({
+    validate(
+      need(input$School1, error_msg_schools),
+      need(input$School2, error_msg_schools)
+    )
+    graph_debt_vs_salary(input$School1, input$School2, "Debt")
+  })
 }
