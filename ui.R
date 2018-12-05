@@ -79,7 +79,8 @@ ui <- fluidPage(
       p("Which School is Right For You is created for prospective university students who want
       to choose their future college or university with financial information in mind. We 
       provide relevant facts and figures about the financial aid, earnings, and debt for 
-      over 7000 undergraduate schools in the United States."),
+      over 7000 undergraduate schools in the United States. Our goal is to help future students 
+      select a school with relevant financial data in mind"),
       
       strong("Our Data"),
       p("Up to date information is accessed from the United States Department of Education’s 
