@@ -84,7 +84,7 @@ ui <- fluidPage(
          provide relevant facts and figures about the financial aid,
          earnings, and debt for over 7000 undergraduate schools
          in the United States."),
-
+      
       strong("Our Data"),
       p("Up to date information is accessed from the United
          States Department of Education’s
