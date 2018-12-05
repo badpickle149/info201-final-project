@@ -59,6 +59,9 @@ harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP",
                                              c("INSTNM", "MN_EARN_WNE_P10",
                                                "UNEMP_RATE", "POVERTY_RATE"))
 
+# Takes in parameters of a selected states and how many rows the user wants to output
+# and returns a dataframe representing the schools in a selected state that have the
+# greatest return on investment.
 list_best_schools <- function(selected_state, num_rows)  {
   treasury_min <- treasury %>% select(INSTNM, MN_EARN_WNE_INC1_P10,
                                       MN_EARN_WNE_INC2_P10,
