@@ -1,3 +1,5 @@
+## this script handles the user interface of our shiny app
+
 library(shiny)
 
 source("ui-processing.R")
