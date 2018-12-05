@@ -63,12 +63,14 @@ graph_debt_vs_salary <- function(school1, school2, option) {
 }  
 
 server <- function(input, output, session) {
-  ## Show school 1 name
-  output$school_title_1 <- renderText({
-    input$School1
-  }) 
-  ## Show school 2 name
+  error_msg_schools <- "Please select two schools to compare. If you don't need a second school, you can choose the same school again."
+  error_msg_options <- "Please select at least two options to compare."
+  
   school1_df <- reactive({
+    validate(
+      need(input$School1, error_msg_schools),
+      need(length(input$SchoolOptions) >= 2, error_msg_options)
+    )
     df <- school_info(input$School1, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
@@ -80,6 +82,10 @@ server <- function(input, output, session) {
     df <- cbind(Categories = rownames(df), df)
   })
   school2_df <- reactive({
+    validate(
+      need(input$School2, error_msg_schools),
+      need(length(input$SchoolOptions) >= 2, error_msg_options)
+    )
     df <- school_info(input$School2, 
                       get_school_params(input$SchoolOptions, "score"), 
                       get_school_params(input$SchoolOptions, "treasury")
@@ -91,6 +97,10 @@ server <- function(input, output, session) {
     df <- cbind(Categories = rownames(df), df)
   })
   output$school_comparison <- renderTable({
+    validate(
+      need(school1_df(), error_msg_schools),
+      need(school2_df(), error_msg_schools)
+    )
     school1 <- school1_df()
     school2 <- school2_df()
     df <- merge(school1, school2)
@@ -105,8 +115,20 @@ server <- function(input, output, session) {
   }, striped = TRUE)
   
   ## plot to compare earnings after graduating from each school
-  output$plot_earnings <- renderPlot(graph_debt_vs_salary(input$School1, input$School2, "Earnings"))
+  output$plot_earnings <- renderPlot({
+    validate(
+      need(input$School1, error_msg_schools),
+      need(input$School2, error_msg_schools)
+    )
+    graph_debt_vs_salary(input$School1, input$School2, "Earnings")
+  })
   
   ## plot to compare debt after graduating from each school
-  output$plot_debt <- renderPlot(graph_debt_vs_salary(input$School1, input$School2, "Debt"))
+  output$plot_debt <- renderPlot({
+    validate(
+      need(input$School1, error_msg_schools),
+      need(input$School2, error_msg_schools)
+    )
+    graph_debt_vs_salary(input$School1, input$School2, "Debt")
+  })
 }
