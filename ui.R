@@ -18,20 +18,21 @@ ui <- fluidPage(
       titlePanel("Compare Two Schools"),
       sidebarLayout(
         sidebarPanel(
+          ## widget to select school 1
           selectizeInput(
             "School1", label = NULL, choices = schools, selected =
               "Harvard University", multiple = TRUE,
             options = list(placeholder = 'select a school',
                            maxItems = 1, maxOptions = 8)
           ),
-  
+          ## widget to select school 2
           selectizeInput(
             "School2", label = NULL, choices = schools, selected =
               "Boston College", multiple = TRUE,
             options = list(placeholder = 'select a school',
                            maxItems = 1, maxOptions = 8)
           ),
-   
+          ## widget to select categories to be shown
           checkboxGroupInput(
             "SchoolOptions",
             label = "Options",
@@ -42,7 +43,12 @@ ui <- fluidPage(
         ),
         mainPanel(
           fluidRow(
-            tableOutput("school_comparison")
+            ## outputs comparison table using information from above widgets
+            tableOutput("school_comparison"),
+            ## shows plots for earnings and debt after college respectively
+            ## uses two school selector widgets to show plots
+            plotOutput("plot_earnings"),
+            plotOutput("plot_debt")
           )
         )
       )
@@ -55,11 +61,13 @@ ui <- fluidPage(
       sidebarLayout(
 
         sidebarPanel(
+          ## select a state widget
           selectInput(
             "states",
             "Select a State of Interest",
             choices = state.abb
           ),
+          ## slider widget lets users choose how many results to display
           sliderInput(
             "num_rows",
             "Number of Schools to Display",
@@ -67,6 +75,7 @@ ui <- fluidPage(
             max = 30,
             value = 10
           ),
+          ## short description of how table is ranked for users
           helpText(state_ranking_descr)
         ),
 
