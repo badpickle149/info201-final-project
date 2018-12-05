@@ -51,12 +51,12 @@ graph_debt_vs_salary <- function(school1, school2, option) {
   if (option == "Debt") { ## plots a Debt comparison bar graph
     plot <- ggplot(data=df, aes(x=`School Name`, y=`Total Debt After Graduation ($)`)) +
       geom_bar(stat="identity" ,fill="steelblue") +
-      geom_text(aes(label=`Total Debt After Graduation ($)`), vjust=1.6, color="white", size=3.5) +
+      geom_text(aes(label=`Total Debt After Graduation ($)`), vjust=1.6, color="white", size=6.0) +
       theme_minimal() + scale_y_continuous(labels = comma)
   } else { ## plots an Earnings comparison bar graph
     plot <- ggplot(data=df, aes(x=`School Name`, y=`Earning/yr After Graduation ($)`)) +
       geom_bar(stat="identity" ,fill="steelblue") +
-      geom_text(aes(label=`Earning/yr After Graduation ($)`), vjust=1.6, color="white", size=3.5) +
+      geom_text(aes(label=`Earning/yr After Graduation ($)`), vjust=1.6, color="white", size=6.0) +
       theme_minimal() + scale_y_continuous(labels = comma)
   }
   return(plot)
