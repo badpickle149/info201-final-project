@@ -5,8 +5,8 @@ account: ann-ss
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 602181
-bundleId: 1737937
+bundleId: 1741338
 url: https://ann-ss.shinyapps.io/info201-final-project/
-when: 1543890151.49848
+when: 1543982182.99054
 asMultiple: FALSE
 asStatic: FALSE
