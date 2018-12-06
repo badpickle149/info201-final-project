@@ -96,7 +96,7 @@ ui <- fluidPage(
          earnings, and debt for over 7000 undergraduate schools
          in the United States."),
       
-      strong("Our Data"),
+      h3("Our Data"),
       p("Up to date information is accessed from the United
          States Department of Education’s
          College Scorecard, a public resource which includes
@@ -107,12 +107,33 @@ ui <- fluidPage(
          value of schools by state and make it easier
          for you to make the right choice."),
       
-      strong("Questions Addressed"),
-      p("What financial factors are important to consider when choosing a college?"),
-      p("How do two colleges I am considering compare to each other?"),
-      p("What colleges in my state have the best return on investment?"),
-      
-      strong("Our Team"),
+      h3("Questions Addressed"),
+      p("Our target audience is all prospective US college students.
+        Our app provides an easy way to compare the financial
+        cost and benefit of different colleges in the US. 
+        The following are questions you may have that are answered
+        in our app:"),
+      strong("What percent of students at [name] college receive federal loans,
+             and how does this compare to other colleges I'm interested in?"),
+      p("If you navigate to our first tab, you can choose the 
+        % students receiving federal loans option and choose two colleges
+        to compare. You may also be interested in the percentage of 
+        students who receive the Pell Grant."),
+      strong("How do two colleges I am considering compare to each other
+             in terms of average earnings and debt after graduation?"),
+      p("You can check this directly in our first tab by selecting
+        the corresponding categories in the sidebar and the schools
+        you are interested in, or even if you just choose two schools
+        you are interested in, there are two bar graphs comparing
+        the mean earnings 10 years after enrollment for the two schools
+        and the mean debt after graduation for the two schoolsrespectively."),
+      strong("What colleges in my state have the best return on investment?"),
+      p("On our second tab, you can choose any US state and see a table
+        of colleges in that state (that have chosen to release the relevant
+        information) ranked by their return on investment. You can
+        also compare average earnings and debt after graduation directly.
+        See that tab for more details on how the ranking is calculated."),
+      h3("Our Team"),
       p("Ann Shan, Ryan Tucker, Kevin Weng, Thomas Kakatsakis")
       
       

@@ -36,28 +36,6 @@ school_info <- function(name, vector1, vector2) {
   left_join(score, treas, by = "INSTNM")
 }
 
-replace_col_names <- function(df) {
-  for (x in names(df)) {
-    if (!is.na(match(x, checkbox_choice_values))) {
-      index = match(x, checkbox_choice_values)
-      if (length(fields) > 0) {
-        append(checkbox_choice_values[[index]], fields, after = 0)
-      } else {
-        append(checkbox_choice_values[[index]], fields, after = 1)
-      }
-    }
-  }
-  names(df) <- fields
-  return(df)
-}
-
-# Example call
-harvard <- school_info("Harvard University", c("INSTNM", "GRAD_DEBT_MDN_SUPP",
-                                               "MD_EARN_WNE_P10", "PCTFLOAN",
-                                               "PCTPELL", "UGDS", "INSTURL"),
-                                             c("INSTNM", "MN_EARN_WNE_P10",
-                                               "UNEMP_RATE", "POVERTY_RATE"))
-
 # Takes in parameters of a selected states and how many rows the user 
 # wants to output and returns a dataframe representing the schools 
 # in a selected state that have the greatest return on investment.
@@ -149,15 +127,21 @@ graph_debt_vs_salary <- function(school1, school2, option) {
                  "Earning/yr After Graduation ($)")
   if (option == "Debt") { ## plots a Debt comparison bar graph
     plot <- ggplot(data = df, aes(x = `School Name`, 
-                                  y = `Total Debt After Graduation ($)`)) +
-      geom_bar(stat = "identity", fill = "steelblue") +
+                                  y = `Total Debt After Graduation ($)`,
+                                  fill = `School Name`)) +
+      ##scale_fill_brewer(palette="Pastel2") + 
+      labs(title="Total Debt after Graduation") +
+      geom_bar(stat = "identity") +
       geom_text(aes(label = `Total Debt After Graduation ($)`), vjust = 1.6, 
                 color = "white", size = 6.0) +
       theme_minimal() + scale_y_continuous(labels = comma)
   } else { ## plots an Earnings comparison bar graph
     plot <- ggplot(data = df, aes(x = `School Name`, 
-                                  y = `Earning/yr After Graduation ($)`)) +
-      geom_bar(stat = "identity", fill = "steelblue") +
+                                  y = `Earning/yr After Graduation ($)`,
+                                  fill = `School Name`)) +
+      scale_fill_brewer(palette="Set1") + 
+      labs(title="Mean Earnings after Graduation") +
+      geom_bar(stat = "identity") +
       geom_text(aes(label = `Earning/yr After Graduation ($)`), 
                 vjust = 1.6, color = "white", size = 6.0) +
       theme_minimal() + scale_y_continuous(labels = comma)
