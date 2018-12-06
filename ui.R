@@ -109,8 +109,8 @@ ui <- fluidPage(
       
       strong("Questions Addressed"),
       p("What financial factors are important to consider when choosing a college?"),
-      p("How do potential future colleges compare to each other?"),
-      p("What schools in my state have the best return on investment?"),
+      p("How do two colleges I am considering compare to each other?"),
+      p("What colleges in my state have the best return on investment?"),
       
       strong("Our Team"),
       p("Ann Shan, Ryan Tucker, Kevin Weng, Thomas Kakatsakis")
