@@ -105,7 +105,17 @@ ui <- fluidPage(
          We display and break down this data using
          our return on investment formula to rank the
          value of schools by state and make it easier
-         for you to make the right choice.")
+         for you to make the right choice."),
+      
+      strong("Questions Addressed"),
+      p("What financial factors are important to consider when choosing a college?"),
+      p("How do potential future colleges compare to each other?"),
+      p("What schools in my state have the best return on investment?"),
+      
+      strong("Our Team"),
+      p("Ann Shan, Ryan Tucker, Kevin Weng, Thomas Kakatsakis")
+      
+      
   
     )
   )
