@@ -135,9 +135,6 @@ ui <- fluidPage(
         See that tab for more details on how the ranking is calculated."),
       h3("Our Team"),
       p("Ann Shan, Ryan Tucker, Kevin Weng, Thomas Kakatsakis")
-      
-      
-  
     )
   )
 )

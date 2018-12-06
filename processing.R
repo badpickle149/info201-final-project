@@ -10,10 +10,12 @@ scorecard <- read.csv("data/Most-Recent-Cohorts-Scorecard-Elements.csv",
 treasury <- read.csv("data/Most-Recent-Cohorts-Treasury-Elements.csv",
                      stringsAsFactors = FALSE, header = TRUE, sep = "," )
 
-checkbox_choice_values <- c("GRAD_DEBT_MDN_SUPP", ##"GRAD_DEBTMDN10YR_SUPP",
+checkbox_choice_values <- c("GRAD_DEBT_MDN_SUPP", 
                             "MD_EARN_WNE_P10", "PCTFLOAN", "PCTPELL", "UGDS",
                             "INSTURL", "MN_EARN_WNE_P10", "UNEMP_RATE",
                             "POVERTY_RATE")
+## the key to change the confusing column names to 
+## more appropriate and understandable names. 
 name_key <- c(INSTNM = "College",
               GRAD_DEBT_MDN_SUPP = "Median Total Grad Debt",
               MD_EARN_WNE_P10 = "Median Earnings after Graduation",
@@ -139,7 +141,6 @@ graph_debt_vs_salary <- function(school1, school2, option) {
     plot <- ggplot(data = df, aes(x = `School Name`, 
                                   y = `Earning/yr After Graduation ($)`,
                                   fill = `School Name`)) +
-      scale_fill_brewer(palette="Set1") + 
       labs(title="Mean Earnings after Graduation") +
       geom_bar(stat = "identity") +
       geom_text(aes(label = `Earning/yr After Graduation ($)`), 
